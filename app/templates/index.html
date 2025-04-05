@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .endpoint {
+            background-color: #f4f4f4;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .endpoint h3 {
+            color: #16a085;
+        }
+        .endpoint code {
+            background-color: #ecf0f1;
+            padding: 5px;
+            font-size: 1.1em;
+        }
+        .tech-stack {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        .tech-stack h2 {
+            color: #2c3e50;
+        }
+        .tech-stack ul {
+            list-style-type: none;
+        }
+        .tech-stack ul li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Flask API Documentation</h1>
+    <p>Welcome to the Flask API documentation! This API is designed to manage tasks with role-based access control (RBAC), leveraging Flask, PostgreSQL, Redis, Celery, and Docker for containerization. Below, you'll find details on how to interact with the API endpoints.</p>
+
+    <!-- Register Endpoint -->
+    <section class="endpoint">
+        <h3>1. User Registration</h3>
+        <p><strong>URL:</strong> <code>/auth/register</code></p>
+        <p><strong>Method:</strong> <code>POST</code></p>
+        <p><strong>Body:</strong> <code>application/json</code></p>
+        <p><strong>Description:</strong> Register a new user by providing a username, email, and password. Upon successful registration, the user will receive a JWT token for authentication.</p>
+        <p><strong>Request Body:</strong>
+        <pre>
+        {
+            "username": "user123",
+            "email": "user123@example.com",
+            "password": "password123"
+        }
+        </pre>
+        </p>
+        <p><strong>Response:</strong> A JWT token will be returned for authentication.</p>
+        <p><strong>Example:</strong></p>
+        <pre>
+        POST /auth/register HTTP/1.1
+        Content-Type: application/json
+
+        {
+            "username": "user123",
+            "email": "user123@example.com",
+            "password": "password123"
+        }
+        </pre>
+    </section>
+
+    <!-- Login Endpoint -->
+    <section class="endpoint">
+        <h3>2. User Login</h3>
+        <p><strong>URL:</strong> <code>/auth/login</code></p>
+        <p><strong>Method:</strong> <code>POST</code></p>
+        <p><strong>Body:</strong> <code>application/json</code></p>
+        <p><strong>Description:</strong> Log in to the application by providing the registered email and password. Upon successful login, the user will receive a JWT token for authentication.</p>
+        <p><strong>Request Body:</strong>
+        <pre>
+        {
+            "email": "user123@example.com",
+            "password": "password123"
+        }
+        </pre>
+        </p>
+        <p><strong>Response:</strong> A JWT token will be returned for authentication.</p>
+        <p><strong>Example:</strong></p>
+        <pre>
+        POST /auth/login HTTP/1.1
+        Content-Type: application/json
+
+        {
+            "email": "user123@example.com",
+            "password": "password123"
+        }
+        </pre>
+    </section>
+
+    <!-- Get All Tasks -->
+    <section class="endpoint">
+        <h3>3. Get All Tasks</h3>
+        <p><strong>URL:</strong> <code>/tasks</code></p>
+        <p><strong>Method:</strong> <code>GET</code></p>
+        <p><strong>Authorization:</strong> Bearer JWT Token (Admin or User role)</p>
+        <p><strong>Description:</strong> Retrieve a list of tasks. Admin can view all tasks, while a user can only view their own tasks.</p>
+        <p><strong>Response:</strong> A list of tasks, or an empty list if no tasks exist.</p>
+        <p><strong>Example:</strong></p>
+        <pre>
+        GET /tasks HTTP/1.1
+        Authorization: Bearer <JWT Token>
+        </pre>
+    </section>
+
+    <!-- Create a Task -->
+    <section class="endpoint">
+        <h3>4. Create a Task</h3>
+        <p><strong>URL:</strong> <code>/tasks</code></p>
+        <p><strong>Method:</strong> <code>POST</code></p>
+        <p><strong>Authorization:</strong> Bearer JWT Token (User role)</p>
+        <p><strong>Description:</strong> Create a new task. The task will be assigned to the user making the request.</p>
+        <p><strong>Request Body:</strong>
+        <pre>
+        {
+            "title": "Task Title",
+            "description": "Task Description"
+        }
+        </pre>
+        </p>
+        <p><strong>Response:</strong> A success message with the created task details.</p>
+        <p><strong>Example:</strong></p>
+        <pre>
+        POST /tasks HTTP/1.1
+        Authorization: Bearer <JWT Token>
+        Content-Type: application/json
+        
+        {
+            "title": "New Task",
+            "description": "This is a new task description"
+        }
+        </pre>
+    </section>
+
+    <!-- Update a Task -->
+    <section class="endpoint">
+        <h3>5. Update a Task</h3>
+        <p><strong>URL:</strong> <code>/tasks/{id}</code></p>
+        <p><strong>Method:</strong> <code>PUT</code></p>
+        <p><strong>Authorization:</strong> Bearer JWT Token (User role, or Admin)</p>
+        <p><strong>Description:</strong> Update a task by ID. Only the user who created the task or an Admin can update it.</p>
+        <p><strong>Request Body:</strong>
+        <pre>
+        {
+            "title": "Updated Task Title",
+            "description": "Updated task description"
+        }
+        </pre>
+        </p>
+        <p><strong>Response:</strong> A success message with the updated task details.</p>
+        <p><strong>Example:</strong></p>
+        <pre>
+        PUT /tasks/1 HTTP/1.1
+        Authorization: Bearer <JWT Token>
+        Content-Type: application/json
+        
+        {
+            "title": "Updated Task",
+            "description": "Updated description for task"
+        }
+        </pre>
+    </section>
+
+    <!-- Delete a Task -->
+    <section class="endpoint">
+        <h3>6. Delete a Task</h3>
+        <p><strong>URL:</strong> <code>/tasks/{id}</code></p>
+        <p><strong>Method:</strong> <code>DELETE</code></p>
+        <p><strong>Authorization:</strong> Bearer JWT Token (Admin only)</p>
+        <p><strong>Description:</strong> Delete a task by ID. Only Admin can delete a task.</p>
+        <p><strong>Response:</strong> A success message confirming task deletion.</p>
+        <p><strong>Example:</strong></p>
+        <pre>
+        DELETE /tasks/1 HTTP/1.1
+        Authorization: Bearer <JWT Token>
+        </pre>
+    </section>
+
+    <section class="tech-stack">
+        <h2>Technology Stack</h2>
+        <ul>
+            <li><strong>Flask:</strong> Python web framework for building RESTful APIs.</li>
+            <li><strong>PostgreSQL:</strong> Relational database for storing task and user data. (Dockerized)</li>
+            <li><strong>Redis:</strong> In-memory data store used for caching and message brokering (Celery).</li>
+            <li><strong>Celery:</strong> Distributed task queue for handling background tasks asynchronously.</li>
+            <li><strong>JWT:</strong> JSON Web Token for authentication and role-based access control (RBAC).</li>
+            <li><strong>Docker:</strong> Used to containerize the application, database, and services for easy deployment.</li>
+            <li><strong>Docker Compose:</strong> Defines and runs multi-container Docker applications for the entire stack.</li>
+        </ul>
+    </section>
+
+    <section class="tech-stack">
+        <h2>How to Run Locally</h2>
+        <p>To run this Flask API locally, make sure you have Docker and Docker Compose installed.</p>
+        <pre>
+        # Clone the repository
+        git clone <repo-url>
+
+        # Navigate to the project directory
+        cd <project-directory>
+
+        # Build and run the Docker containers
+        docker-compose up --build
+        </pre>
+        <p>The application will be running on <code>http://localhost:5000</code>.</p>
+    </section>
+
+    <section class="tech-stack">
+        <h2>API Authentication</h2>
+        <p>To interact with the API endpoints, you need to authenticate using JWT tokens. Here's how:</p>
+        <ol>
+            <li>Register a user and obtain a JWT token via the <code>/auth/register</code> endpoint.</li>
+            <li>Log in to get a JWT token via the <code>/auth/login</code> endpoint.</li>
+            <li>Include the token in the <code>Authorization</code> header of your requests as a Bearer token.</li>
+        </ol>
+    </section>
+
+</body>
+</html>

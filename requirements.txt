@@ -1,0 +1,23 @@
+# Core
+Flask==2.3.2
+python-dotenv==1.0.0
+
+# Database
+Flask-SQLAlchemy==3.1.1
+psycopg2-binary==2.9.9  # PostgreSQL driver
+
+# Migrations
+Flask-Migrate==4.0.5
+
+# JWT Authentication
+Flask-JWT-Extended==4.6.0
+
+# Celery + Redis
+celery==5.3.4
+redis==5.0.1
+
+
+# Gunicorn (Production WSGI server)
+gunicorn==21.2.0
+
+

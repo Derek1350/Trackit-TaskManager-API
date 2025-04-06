@@ -20,10 +20,17 @@ def add_task_to_db(task):
 
 # 🚀 Get all tasks or tasks by user_id
 def get_task_from_db(user_id=None,task_id=None):
-    query = TaskManager.query
-
     if task_id:
-        query = query.get(id=task_id)
+        # Direct primary key lookup
+        task = TaskManager.query.get(task_id)
+        if not task:
+            return None
+        # If user_id is given, make sure it matches
+        if user_id and task.user_id != user_id:
+            return None
+        return task
+
+    query = TaskManager.query
     if user_id:
         query = query.filter_by(user_id=user_id)
 

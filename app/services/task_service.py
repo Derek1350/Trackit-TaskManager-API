@@ -28,7 +28,7 @@ def get_tasks(user_id, role):
     return tasks
 
 def update_task(task_id, title, description, user_id, role):
-    task = get_task_from_db(task_id)
+    task = get_task_from_db(task_id=task_id)
     if not task:
         return None  # Task not found
 

@@ -2,7 +2,7 @@ from functools import wraps
 from flask import request, jsonify
 from app.utils.jwt_helper import decode_token
 
-# 🎫 Requires valid JWT token
+# Requires valid JWT token
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -17,14 +17,14 @@ def token_required(f):
                 return jsonify({"message": data["error"]}), 401
 
             request.user = data  # Attach user info to request context
-        except Exception:
-            return jsonify({"message": "Invalid token format"}), 401
+        except Exception as e:
+            return jsonify({"message": f"Error: {str(e)}"}), 401
 
         return f(*args, **kwargs)
     return decorated
 
 
-# 🛂 Requires specific role
+# Requires specific role
 def role_required(*roles):
     def wrapper(f):
         @wraps(f)

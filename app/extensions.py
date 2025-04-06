@@ -9,4 +9,4 @@ jwt = JWTManager()
 migrate = Migrate()
 
 # Initialize Redis client
-redis_client = Redis.from_url("redis://localhost:6379/0")  # You can replace this with your Redis URL in the environment
+redis_client = Redis.from_url("redis://redis:6379/0")  # You can replace this with your Redis URL in the environment

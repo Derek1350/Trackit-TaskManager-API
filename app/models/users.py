@@ -12,8 +12,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)  # Added password field
-    password_hash = db.Column(db.String(255), nullable=False)  # For storing hashed password
+    password_hash = db.Column(db.String(255), nullable=False)  # Store hashed password
     role = db.Column(db.Enum(RoleEnum), default=RoleEnum.user)
 
     tasks = db.relationship('TaskManager', backref='user', lazy=True)
@@ -28,9 +27,8 @@ class User(db.Model):
         return self.role == RoleEnum.admin
 
     def has_permission(self, permission):
-        # In real app, permissions can be stored in DB or constants
         if self.is_admin():
-            return True  # Admins have all permissions
+            return True
         if permission == "add_task":
             return True
         return False

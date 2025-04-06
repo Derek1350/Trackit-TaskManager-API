@@ -10,11 +10,12 @@ def serialize_task(task):
         "description": task.description,
         "is_active": task.is_active,
         "user_id": task.user_id,
-        "created_at": task.created_at.isoformat() if task.created_at else None
+        "created_at": task.created_at.isoformat() if task.created_at else None,
+        "priority" :task.priority
     }
 
-def create_task(user_id, title, description):
-    task = TaskManager(user_id=user_id, title=title, description=description)
+def create_task(user_id, title, description,priority):
+    task = TaskManager(user_id=user_id, title=title, description=description, priority=priority)
     add_task_to_db(task)
 
     return serialize_task(task)
@@ -43,7 +44,7 @@ def update_task(task_id, title, description, user_id, role):
 
 # Delete a task (only admin can delete)
 def delete_task(task_id):
-    task = get_task_from_db(task_id)
+    task = get_task_from_db(task_id=task_id)
     if task:
         delete_task_from_db(task)
         

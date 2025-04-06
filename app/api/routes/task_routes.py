@@ -23,12 +23,13 @@ def add_task():
     data = request.get_json()
     title = data.get('title')
     description = data.get('description')
+    priority = data.get('priority')
     user_id = token_payload['user_id']
 
     if not title or not description:
         return jsonify({"message": "Title and description are required"}), 400
 
-    task = create_task(user_id, title, description)
+    task = create_task(user_id, title, description, priority)
     return jsonify({"message": "Task created","task":task}), 201
 
 
@@ -62,5 +63,5 @@ def update_task_route(task_id):
 @role_required('admin')
 @token_required
 def delete_task_route(task_id):
-    delete_task(task_id)
-    return jsonify({"message": "Task deleted successfully"})
+    deleted_task = delete_task(task_id)
+    return jsonify({"message": "Task deleted successfully","Deleted_task":deleted_task})

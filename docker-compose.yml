@@ -41,5 +41,17 @@ services:
     env_file:
       - .env.dev
 
+  celery-beat:
+    build: .
+    command: celery -A celery_worker.celery beat --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - web
+    env_file:
+      - .env.dev
+
+
 volumes:
   pgdata:

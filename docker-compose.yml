@@ -50,7 +50,7 @@ services:
       - redis
       - web
     env_file:
-      - .env.dev
+        - .env.dev
 
 
 volumes:

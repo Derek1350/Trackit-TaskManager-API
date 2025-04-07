@@ -40,9 +40,8 @@ def get_task_from_db(user_id=None,task_id=None):
 
 
 # 🚀 Update task in DB
-def update_task_in_db(task):
+def update_task_in_db():
     db.session.commit()
-    return task
 
 # 🚀 Delete task from DB (doesn't need to return anything)
 def delete_task_from_db(task):

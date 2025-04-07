@@ -33,9 +33,10 @@ def get_tasks(user_id, role):
         if cached:
             return json.loads(cached)
 
-        tasks = [serialize_task(task) for task in get_task_from_db()]
-        redis_client.setex("all_tasks", CACHE_EXPIRY, json.dumps(tasks))
-        return tasks
+        tasks = get_task_from_db() or []
+        serialized = [serialize_task(task) for task in tasks]
+        redis_client.setex("all_tasks", CACHE_EXPIRY, json.dumps(serialized))
+        return serialized
 
     else:
         cache_key = f"user_tasks:{user_id}"
@@ -43,9 +44,10 @@ def get_tasks(user_id, role):
         if cached:
             return json.loads(cached)
 
-        tasks = [serialize_task(task) for task in get_task_from_db(user_id)]
-        redis_client.setex(cache_key, CACHE_EXPIRY, json.dumps(tasks))
-        return tasks
+        tasks = get_task_from_db(user_id=user_id) or []
+        serialized = [serialize_task(task) for task in tasks]
+        redis_client.setex(cache_key, CACHE_EXPIRY, json.dumps(serialized))
+        return serialized
 
 def update_task(task_id, updated_fields, user_id, role):
     task = TaskManager.query.get(task_id)

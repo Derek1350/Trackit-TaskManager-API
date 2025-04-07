@@ -19,5 +19,5 @@ redis==5.0.1
 
 # Gunicorn (Production WSGI server)
 gunicorn==21.2.0
-
+requests
 

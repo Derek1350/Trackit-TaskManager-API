@@ -2,7 +2,7 @@ import csv
 import requests
 import io
 from flask import Blueprint, request, jsonify
-from app.services.task_service import create_task, get_tasks, update_task, delete_task
+from app.services.task_service import create_task, get_tasks, update_task, delete_task,get_logged_tasks
 from app.api.middlewares.auth import token_required, role_required
 from app.utils.jwt_helper import decode_token
 
@@ -80,6 +80,14 @@ def get_all_tasks():
     tasks = get_tasks(token_payload['user_id'], token_payload['role'])
     return jsonify({"tasks": tasks})
 
+
+# Get all logged tasks (Admin only)
+@task_bp.route('/logged', methods=['GET'])
+@role_required('admin')
+@token_required
+def get_logged_tasks_route():
+    tasks = get_logged_tasks()
+    return jsonify({"logged_tasks": tasks}), 200
 
 # Update a task (Admin or the task creator can update)
 @task_bp.route('/<int:task_id>', methods=['PUT'])

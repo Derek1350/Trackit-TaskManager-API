@@ -1,6 +1,7 @@
 import json
 from app.repositories.task_repo import add_task_to_db, get_task_from_db, update_task_in_db, delete_task_from_db
 from app.models.task_manager import TaskManager
+from app.models.task_logger import TaskLogger
 from app.extensions import redis_client, db
 from datetime import timedelta
 
@@ -77,3 +78,7 @@ def delete_task(task_id):
         redis_client.delete(f"user_tasks:{task.user_id}")
 
     return serialize_task(task)
+
+def get_logged_tasks():
+    tasks = TaskLogger.query.all() or []
+    return [serialize_task(task) for task in tasks]

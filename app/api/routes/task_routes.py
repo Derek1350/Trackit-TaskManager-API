@@ -30,10 +30,11 @@ def add_task():
     token_payload = token_payload_retrieve(request)
     user_id = token_payload['user_id']
     data = request.get_json()
-
-    csv_url = convert_to_csv_url(data.get('csv_url'))
+    csv_url_fetch = data.get('csv_url')
 
     if csv_url:
+        csv_url = convert_to_csv_url(csv_url_fetch)
+
         try:
             response = requests.get(csv_url)
             response.raise_for_status()

@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Reference - TaskPulse</title>
+    <title>Auth Reference</title>
     <style>
         body { font-family: Arial, sans-serif; padding: 2rem; line-height: 1.6; background: #f9f9f9; color: #333; }
         h1, h2, h3 { color: #222; }
         pre { background: #eee; padding: 1rem; overflow-x: auto; border-radius: 5px; }
         .endpoint { margin-bottom: 2rem; }
         .method { font-weight: bold; color: #007BFF; }
+        .note { background: #fff4e5; padding: 1rem; border-left: 5px solid #f0ad4e; border-radius: 5px; margin-bottom: 2rem; }
     </style>
 </head>
 <body>
-    <h1>Trackit API Reference Guide</h1>
+    <h1>Trackit Auth Reference Guide</h1>
+
+    <div class="note">
+        <strong>Note:</strong> You must <strong>register first</strong> to create a user. Then, <strong>login</strong> to receive a <code>JWT token</code> which is valid for <strong>1 hour</strong>. After that, you need to login again to get a new token.
+    </div>
 
     <div class="endpoint">
         <h2>📌 Register a New User</h2>
@@ -50,23 +55,5 @@
         <pre>{ "message": "Invalid credentials" }</pre>
     </div>
 
-    <div class="endpoint">
-        <h2>📄 Upload CSV to TaskManager</h2>
-        <p><span class="method">POST</span> /upload-csv</p>
-        <h3>Headers</h3>
-        <pre>Authorization: Bearer &lt;JWT-TOKEN&gt;</pre>
-        <h3>CSV Format</h3>
-        <pre>
-title,description,priority
-"Build Backend","Complete backend logic","high"
-"Write Docs","Document all endpoints","medium"
-        </pre>
-        <h3>Response</h3>
-        <pre>{ "message": "Tasks uploaded successfully" }</pre>
-        <h3>Error</h3>
-        <pre>{ "error": "Invalid file or format" }</pre>
-    </div>
-
-    <!-- Additional endpoints like /tasks, /task/<id> will be continued in the next part -->
 </body>
 </html>

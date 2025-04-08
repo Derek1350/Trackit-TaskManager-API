@@ -32,7 +32,7 @@ def add_task():
     data = request.get_json()
     csv_url_fetch = data.get('csv_url')
 
-    if csv_url:
+    if csv_url_fetch:
         csv_url = convert_to_csv_url(csv_url_fetch)
 
         try:

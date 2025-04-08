@@ -9,57 +9,56 @@
       font-family: Arial, sans-serif;
       background: #f4f9fd;
       margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      padding: 40px;
       text-align: center;
+      color: #2b3a55;
     }
 
     h1 {
       font-size: 2rem;
-      margin-bottom: 20px;
-      color: #2b3a55;
+      margin-bottom: 10px;
     }
 
     p {
       color: #555;
-      margin-bottom: 30px;
-    }
-
-    .btn-container {
-      display: flex;
-      gap: 30px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      padding: 15px 30px;
       font-size: 16px;
-      background-color: #2b7bff;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
     }
 
-    .btn:hover {
-      background-color: #1a5ed6;
+    .url-box {
+      margin-top: 30px;
+      background-color: #eef4ff;
+      padding: 20px;
+      border-radius: 8px;
+      display: inline-block;
+      text-align: left;
+    }
+
+    .url-box code {
+      background-color: #dce8ff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      display: block;
+      margin: 8px 0;
+    }
+
+    .base-url {
+      font-weight: bold;
+      color: #1a5ed6;
     }
   </style>
 </head>
 <body>
   <h1>API Reference Selector</h1>
-  <p>Click one to view detailed API documentation</p>
+  <p>Below is the main API base URL and the corresponding available route groups:</p>
 
-  <div class="btn-container">
-    <a href="{{ url_for('main.auth_docs') }}" class="btn">Authentication Routes</a>
-    <a href="{{ url_for('main.task_docs') }}" class="btn">Task Management Routes</a>
-</div>
+  <div class="url-box">
+    <p class="base-url">Base URL:</p>
+    <code>https://trackit-web.onrender.com</code>
+
+    <p>Available API Documentation Routes:</p>
+    <code>/docs/auth &nbsp; →&nbsp; Authentication Routes</code>
+    <code>/docs/tasks &nbsp; →&nbsp; Task Management Routes</code>
+  </div>
 </body>
 </html>

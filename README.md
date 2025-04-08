@@ -91,9 +91,9 @@ docker-compose.prod.yml
 
 ## 🙌 Author
 
-Built with ❤️ by **Derek Singh**  
-Connect on [LinkedIn](https://linkedin.com/in/chittanshu-singh)  
-Email: chittanshu.dev@gmail.com
+Built with ❤️ by **Chittanshu Singh**  
+Connect on [LinkedIn](https://www.linkedin.com/in/chittanshu-singh-a83944256)  
+Email: chittanshusingh456@gmail.com
 
 ---
 

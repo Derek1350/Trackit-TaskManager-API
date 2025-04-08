@@ -1,33 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Task API Reference</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-        }
-        h1, h2, h3 {
-            color: #2c3e50;
-        }
-        pre {
-            background: #f4f4f4;
-            padding: 10px;
-            border-radius: 4px;
-            overflow-x: auto;
-        }
-        code {
-            font-family: Consolas, monospace;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+      }
+      h1,
+      h2,
+      h3 {
+        color: #2c3e50;
+      }
+      pre {
+        background: #f4f4f4;
+        padding: 10px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+      code {
+        font-family: Consolas, monospace;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Task API Reference</h1>
 
-    <h2>POST /task</h2>
-    <p><strong>Description:</strong> Create a new task (JWT required).</p>
+    <h2>POST /api/tasks</h2>
+    <p>
+      <strong>Description:</strong> Create a new task or upload tasks via CSV.
+      JWT required.
+    </p>
+
+    <h3>Headers:</h3>
+    <pre><code>Authorization: Bearer &lt;your_jwt_token&gt;
+Content-Type: application/json</code></pre>
+
+    <h3>Option 1: Create Single Task</h3>
+    <pre><code>{
+  "title": "My Task",
+  "description": "Do this thing",
+  "priority": "high"
+}</code></pre>
+
+    <h3>Option 2: Upload CSV (Google Sheet CSV URL)</h3>
+    <pre><code>{
+  "csv_url": "https://docs.google.com/spreadsheets/d/your_sheet_id/export?format=csv"
+}</code></pre>
+
+    <h3>Sample Success Response:</h3>
+    <pre><code>{
+  "message": "Task created",
+  "task": {
+    "id": 1,
+    "title": "My Task",
+    "description": "Do this thing",
+    "is_active": true,
+    "user_id": 4,
+    "created_at": "2025-04-07T12:00:00",
+    "priority": "high"
+  }
+}</code></pre>
+
+    <h2>GET /api/tasks</h2>
+    <p>
+      <strong>Description:</strong> Returns all tasks for admin or own tasks for
+      users.
+    </p>
+
+    <h3>Headers:</h3>
+    <pre><code>Authorization: Bearer &lt;your_jwt_token&gt;</code></pre>
+
+    <h3>Response:</h3>
+    <pre><code>{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Task 1",
+      "description": "desc",
+      "is_active": true,
+      "user_id": 4,
+      "created_at": "2025-04-07T12:00:00",
+      "priority": "medium"
+    },
+    ...
+  ]
+}</code></pre>
+
+    <h2>GET /api/tasks/logged</h2>
+    <p>
+      <strong>Description:</strong> Returns all logged (archived) tasks. Admin
+      only.
+    </p>
+
+    <h3>Headers:</h3>
+    <pre><code>Authorization: Bearer &lt;admin_jwt_token&gt;</code></pre>
+
+    <h3>Response:</h3>
+    <pre><code>{
+  "logged_tasks": [
+    {
+      "id": 17,
+      "title": "Archived Task",
+      "description": "Old data",
+      "is_active": false,
+      "user_id": 4,
+      "created_at": "2025-03-30T11:00:00",
+      "priority": "low"
+    },
+    ...
+  ]
+}</code></pre>
+
+    <h2>PUT /api/tasks/&lt;task_id&gt;</h2>
+    <p>
+      <strong>Description:</strong> Update a task. Only task owner or admin can
+      update.
+    </p>
 
     <h3>Headers:</h3>
     <pre><code>Authorization: Bearer &lt;your_jwt_token&gt;
@@ -35,33 +126,15 @@ Content-Type: application/json</code></pre>
 
     <h3>Request Body:</h3>
     <pre><code>{
-    "title": "My Task",
-    "description": "Do this thing",
-    "priority": "high"
-}</code></pre>
-
-    <h3>Sample Success Response:</h3>
-    <pre><code>{
-    "id": 1,
-    "title": "My Task",
-    "description": "Do this thing",
-    "is_active": true,
-    "user_id": 4,
-    "created_at": "2025-04-07T12:00:00",
-    "priority": "high"
-}</code></pre>
-
-    <h2>PUT /task/&lt;task_id&gt;</h2>
-    <p><strong>Description:</strong> Update an existing task. Only the task owner or admin can update.</p>
-
-    <h3>Request Body:</h3>
-    <pre><code>{
-    "title": "Updated Task Title",
-    "description": "Updated desc"
+  "title": "Updated Task Title",
+  "description": "Updated desc",
+  "priority": "high"
 }</code></pre>
 
     <h3>Response:</h3>
     <pre><code>{
+  "message": "Task updated",
+  "task": {
     "id": 1,
     "title": "Updated Task Title",
     "description": "Updated desc",
@@ -69,67 +142,30 @@ Content-Type: application/json</code></pre>
     "user_id": 4,
     "created_at": "2025-04-07T12:00:00",
     "priority": "high"
+  }
 }</code></pre>
 
-    <h2>DELETE /task/&lt;task_id&gt;</h2>
-    <p><strong>Description:</strong> Soft deletes a task (marks as inactive). Only the task owner or admin can delete.</p>
-
-    <h3>Response:</h3>
-    <pre><code>{
-    "id": 1,
-    "title": "Updated Task Title",
-    "description": "Updated desc",
-    "is_active": false,
-    "user_id": 4,
-    "created_at": "2025-04-07T12:00:00",
-    "priority": "high"
-}</code></pre>
-
-    <h2>GET /tasks</h2>
-    <p><strong>Description:</strong> Returns all tasks (admin) or user's tasks (user). Supports caching.</p>
-
-    <h3>Response (List of Tasks):</h3>
-    <pre><code>[
-  {
-    "id": 1,
-    "title": "Task 1",
-    "description": "desc",
-    "is_active": true,
-    "user_id": 4,
-    "created_at": "2025-04-07T12:00:00",
-    "priority": "medium"
-  },
-  ...
-]</code></pre>
-
-    <h2>GET /tasks/logged</h2>
-    <p><strong>Description:</strong> Returns all logged (archived) tasks from TaskLogger table. <strong>Admin only.</strong></p>
+    <h2>DELETE /api/tasks/&lt;task_id&gt;</h2>
+    <p>
+      <strong>Description:</strong> Soft delete a task (set is_active to false).
+      Admin only.
+    </p>
 
     <h3>Headers:</h3>
     <pre><code>Authorization: Bearer &lt;admin_jwt_token&gt;</code></pre>
 
-    <h3>Sample Response:</h3>
-    <pre><code>[
-  {
-    "id": 17,
-    "title": "Archived Task",
-    "description": "Old data",
+    <h3>Response:</h3>
+    <pre><code>{
+  "message": "Task deleted successfully",
+  "Deleted_task": {
+    "id": 1,
+    "title": "Updated Task Title",
+    "description": "Updated desc",
     "is_active": false,
     "user_id": 4,
-    "created_at": "2025-03-30T11:00:00",
-    "priority": "low"
-  },
-  ...
-]</code></pre>
-
-    <h2>CSV Upload Requirements</h2>
-    <p>To upload a CSV to the system:</p>
-    <ul>
-        <li>Required Columns: <code>title, description, priority</code></li>
-        <li>File must be a valid CSV format.</li>
-        <li>Data must not contain nulls in required fields.</li>
-        <li>Each task will be inserted and cached will be invalidated.</li>
-        <li>CSV upload is only accessible to authenticated users.</li>
-    </ul>
-</body>
+    "created_at": "2025-04-07T12:00:00",
+    "priority": "high"
+  }
+}</code></pre>
+  </body>
 </html>
